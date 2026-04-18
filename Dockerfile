@@ -35,10 +35,9 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy essential files
-COPY .env ./
-COPY prisma.config.ts ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.ts ./
 
 # Copy Prisma engine and client (critical for standalone mode)
 COPY --from=builder /app/node_modules ./node_modules
