@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Mail, Phone, MapPin, School, Calendar, Users } from "lucide-react";
-import { getEventBySlug } from "@/lib/events";
+import { getEventBySlug, getEventById } from "@/lib/events";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
   // Merge registration data with file-based event data
   const registrationsWithEventData = await Promise.all(
     student.registrations.map(async (reg) => {
-      const event = await getEventBySlug(reg.eventSlug);
+      const event = await getEventById(reg.eventId);
       return { ...reg, event };
     })
   );
@@ -130,7 +130,7 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                   <div key={reg.id} className="flex items-center gap-4 p-3 rounded-lg bg-[#0f1d17] border border-[#1a3028] hover:border-[#224035] transition-colors">
                     {reg.event ? (
                       <>
-                        <img src={reg.event.coverImage} alt={reg.event.title} className="w-14 h-12 object-cover rounded-md flex-shrink-0 border border-[#1a3028]" />
+                        <img src={reg.event.coverImage || "/placeholder.jpg"} alt={reg.event.title} className="w-14 h-12 object-cover rounded-md flex-shrink-0 border border-[#1a3028]" />
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-white text-sm line-clamp-1">{reg.event.title}</p>
                           <p className="text-xs text-[#a3b8aa]">{new Date(reg.event.date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })}</p>
@@ -141,8 +141,8 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                       </>
                     ) : (
                       <div className="flex-1">
-                        <p className="text-sm font-semibold text-red-400">Unknown Event: {reg.eventSlug}</p>
-                        <p className="text-xs text-[#5a7a68]">The event data for this slug could not be found in the project files.</p>
+                        <p className="text-sm font-semibold text-red-400">Unknown Event</p>
+                        <p className="text-xs text-[#5a7a68]">The event data for ID {reg.eventId} could not be found.</p>
                       </div>
                     )}
                   </div>

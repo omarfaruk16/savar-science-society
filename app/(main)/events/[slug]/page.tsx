@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const event = await getEventBySlug(slug);
+  const event = (await getEventBySlug(slug)) as any;
 
   if (!event || !event.published) {
     notFound();
@@ -48,7 +48,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             {/* Banner */}
             <div className="relative h-[300px] md:h-[450px] w-full rounded-2xl overflow-hidden border border-[#1a3028] shadow-2xl">
               <img 
-                src={event.coverImage} 
+                src={event.coverImage || "/placeholder.jpg"} 
                 alt={event.title} 
                 className="w-full h-full object-cover"
               />
@@ -69,7 +69,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 <div className="flex flex-col md:flex-row gap-8 items-start relative z-10">
                   {event.presidentImg && (
                     <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-[#22c55e] flex-shrink-0">
-                      <img src={event.presidentImg} alt="President" className="w-full h-full object-cover" />
+                      <img src={event.presidentImg || "/placeholder.jpg"} alt="President" className="w-full h-full object-cover" />
                     </div>
                   )}
                   <div>

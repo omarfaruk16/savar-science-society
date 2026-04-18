@@ -42,7 +42,7 @@ export default function LatestEvents({ events }: LatestEventsProps) {
               <div className="relative h-48 overflow-hidden">
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
                 <img 
-                  src={event.coverImage} 
+                  src={event.coverImage || "/placeholder.jpg"} 
                   alt={event.title} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, UserPlus, Upload, Loader2, Trophy, DollarSign, Wallet } from "lucide-react";
-import { registerStudent } from "@/app/register/actions";
+import { registerStudent } from "@/app/(main)/register/actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { EventData } from "@/lib/events";
 
