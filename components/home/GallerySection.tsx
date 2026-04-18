@@ -17,21 +17,18 @@ export default function GallerySection() {
   const duplicatedImages = [...images, ...images];
 
   return (
-    <section className="bg-[#050d0a] py-16 border-t border-[#1a3028] overflow-hidden">
+    <section className="bg-[#050d0a] pt-16 pb-24 border-t border-[#1a3028] overflow-hidden">
       <div className="container mx-auto mb-12">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-6">
-          <div>
-            <div className="badge mb-4">Memories</div>
+        <div className="flex flex-col items-center text-center justify-center gap-6">
+          <div className="max-w-2xl">
+            <div className="badge mb-4 mx-auto">Memories</div>
             <h2 className="section-title">Our <span className="text-[#22c55e]">Gallery</span></h2>
           </div>
-          <Link href="/gallery" className="btn-secondary">
-            View All Photos <ArrowRight className="w-4 h-4" />
-          </Link>
         </div>
       </div>
 
       {/* Infinite scrolling carousel */}
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden mb-12">
         {/* Gradients to fade edges */}
         <div className="absolute top-0 left-0 bottom-0 w-32 bg-gradient-to-r from-[#050d0a] to-transparent z-10"></div>
         <div className="absolute top-0 right-0 bottom-0 w-32 bg-gradient-to-l from-[#050d0a] to-transparent z-10"></div>
@@ -60,6 +57,12 @@ export default function GallerySection() {
             ))}
           </div>
         </div>
+      </div>
+
+      <div className="container mx-auto flex justify-center mt-8">
+        <Link href="/gallery" className="btn-secondary group">
+          View All Photos <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Link>
       </div>
     </section>
   );
