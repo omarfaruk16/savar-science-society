@@ -11,7 +11,7 @@ export default function HeroSection() {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#16a34a] rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-pulse-glow"></div>
       <div className="absolute bottom-0 left-[-100px] w-[400px] h-[400px] bg-[#22c55e] rounded-full mix-blend-screen filter blur-[150px] opacity-10"></div>
 
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10 pt-10">
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10 pt-24 pb-12 md:pt-40 md:pb-20">
 
         {/* Left: Content */}
         <motion.div

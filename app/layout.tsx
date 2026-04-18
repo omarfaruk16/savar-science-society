@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import Header from "@/components/layout/Header"
-import Footer from "@/components/layout/Footer"
 
 export const metadata: Metadata = {
   title: "সাভার সায়েন্স সোসাইটি — Savar Science Society",
@@ -14,21 +12,15 @@ export const metadata: Metadata = {
   },
 }
 
-import { auth } from "@/lib/auth"
-
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const session = await auth()
-
   return (
     <html lang="bn">
       <body>
-        <Header session={session} />
-        <main>{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   )
