@@ -27,6 +27,7 @@ export default function Header({ session }: { session: any }) {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
+    { name: "Committee", path: "/committee" },
     { name: "Events", path: "/events" },
     { name: "Blog", path: "/blog" },
     { name: "Contact", path: "/contact" },

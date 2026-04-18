@@ -20,9 +20,9 @@ export default function FounderMessage() {
               viewport={{ once: true }}
               className="md:col-span-1"
             >
-              <div className="relative pb-[120%] rounded-2xl overflow-hidden border border-[#224035] shadow-2xl">
+              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-[#224035] shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800" 
+                  src="/Abu Bakkr Siddique.jpeg" 
                   alt="Founder of Savar Science Society" 
                   className="absolute inset-0 w-full h-full object-cover grayscale-[30%] hover:grayscale-0 transition-all duration-500"
                 />
