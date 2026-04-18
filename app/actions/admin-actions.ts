@@ -16,7 +16,7 @@ export async function saveBlog(formData: FormData) {
   const excerpt = (formData.get("excerpt") as string)?.trim();
   const content = (formData.get("content") as string)?.trim();
   const author = (formData.get("author") as string)?.trim() || "Savar Science Society";
-  const coverImage = (formData.get("coverImage") as string)?.trim() || null;
+  const coverImage = formData.get("coverImage") as string | null;
   const tagsRaw = (formData.get("tags") as string)?.trim() || "";
   const published = formData.get("published") === "on";
 
@@ -82,7 +82,7 @@ export async function saveEvent(formData: FormData) {
   const feeStr = formData.get("fee") as string;
   const description = (formData.get("description") as string)?.trim();
   const content = (formData.get("content") as string)?.trim();
-  const coverImage = (formData.get("coverImage") as string)?.trim() || null;
+  const coverImage = formData.get("coverImage") as string | null;
   const isRegistrationOpen = formData.get("isRegistrationOpen") === "on";
   const published = formData.get("published") === "on";
 

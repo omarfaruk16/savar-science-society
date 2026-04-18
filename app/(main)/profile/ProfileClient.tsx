@@ -40,21 +40,39 @@ export default function ProfileClient({ user, registrations }: ProfileClientProp
     setIsMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (user.profileImage) {
+      setImagePreview(user.profileImage);
+    }
+  }, [user.profileImage]);
+
   const handleProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setStatus(null);
+    
     const formData = new FormData(e.currentTarget);
-    if (imagePreview) {
-      formData.append("profileImage", imagePreview);
+    
+    // Explicitly handle the profile image
+    if (imagePreview && imagePreview !== user.profileImage) {
+      console.log("Adding new profile image to update...");
+      formData.set("profileImage", imagePreview);
+    } else if (user.profileImage) {
+      // Keep existing image
+      formData.set("profileImage", user.profileImage);
     }
+
+    console.log("Submitting profile update...");
     const result = await updateProfile(formData);
+    
     setLoading(false);
     if (result.success) {
+      console.log("Update success!");
       setStatus({ type: "success", message: result.success });
       setActiveTab("info");
       router.refresh();
     } else {
+      console.error("Update failed:", result.error);
       setStatus({ type: "error", message: result.error || "Validation failed" });
     }
   };
@@ -197,20 +215,22 @@ export default function ProfileClient({ user, registrations }: ProfileClientProp
             <form onSubmit={handleProfileUpdate} className="space-y-8">
               {/* Profile Image Pick */}
               <div className="flex items-center gap-6 pb-6 border-b border-[#1a3028]">
-                <div className="w-24 h-24 rounded-full bg-[#1a3028] border-2 border-dashed border-[#224035] flex items-center justify-center overflow-hidden relative group cursor-pointer hover:border-[#22c55e] transition-colors">
-                  {imagePreview ? (
-                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                  ) : (
-                    <User className="w-8 h-8 text-[#5a7a68] group-hover:text-[#22c55e] transition-colors" />
-                  )}
-                  <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" accept="image/jpeg, image/png" onChange={handleImageChange} />
-                </div>
-                <div>
-                  <h4 className="font-medium text-white mb-1 flex items-center gap-2">
-                    <Upload className="w-4 h-4 text-[#22c55e]"/> Profile Photo
-                  </h4>
-                  <p className="text-sm text-[#a3b8aa]">Click the circle to change your photo. <br /> Max 2MB (JPG or PNG).</p>
-                </div>
+                <label className="flex items-center gap-6 cursor-pointer group">
+                  <div className="w-24 h-24 rounded-full bg-[#1a3028] border-2 border-dashed border-[#224035] flex items-center justify-center overflow-hidden relative group-hover:border-[#22c55e] transition-colors">
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-8 h-8 text-[#5a7a68] group-hover:text-[#22c55e] transition-colors" />
+                    )}
+                    <input type="file" className="hidden" accept="image/jpeg, image/png" onChange={handleImageChange} />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-white mb-1 flex items-center gap-2 group-hover:text-[#22c55e] transition-colors">
+                      <Upload className="w-4 h-4 text-[#22c55e]"/> Profile Photo
+                    </h4>
+                    <p className="text-sm text-[#a3b8aa]">Click here or the photo to change it. <br /> Max 2MB (JPG or PNG).</p>
+                  </div>
+                </label>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

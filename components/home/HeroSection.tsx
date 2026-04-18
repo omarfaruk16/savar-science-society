@@ -18,9 +18,9 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col gap-6"
+          className="flex flex-col items-center text-center lg:items-start lg:text-left gap-6"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#224035] bg-[#0f1d17]/50 backdrop-blur-sm w-max">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#224035] bg-[#0f1d17]/50 backdrop-blur-sm w-max mx-auto lg:mx-0">
             <span className="w-2 h-2 rounded-full bg-[#22c55e] animate-pulse"></span>
             <span className="text-sm font-medium text-[#a3b8aa]">Empowering Savar's Future</span>
           </div>

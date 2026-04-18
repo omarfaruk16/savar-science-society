@@ -85,7 +85,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           If it's just raw text with newlines, we can format it. For this implementation, let's treat it as HTML or split by newline if it's plain text.
         */}
         <div className="prose prose-invert prose-lg prose-green max-w-none text-[#a3b8aa] leading-relaxed mb-16">
-          <div dangerouslySetInnerHTML={{ __html: blog.content.replace(/\n/g, '<br/>') }} />
+          <div dangerouslySetInnerHTML={{ __html: blog.content }} />
         </div>
 
         {/* Share & Tags Bottom */}

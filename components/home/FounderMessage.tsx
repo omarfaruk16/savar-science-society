@@ -40,7 +40,7 @@ export default function FounderMessage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="md:col-span-2 relative"
+              className="md:col-span-2 relative text-center md:text-left"
             >
               <Quote className="w-16 h-16 text-[#22c55e]/20 absolute -top-8 -left-8 -rotate-12" />
               

@@ -115,7 +115,7 @@ export default function Header({ session }: { session: any }) {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex items-center gap-4 lg:hidden">
           {!session && (
             <Link
               href="/login"

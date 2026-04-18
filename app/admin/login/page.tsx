@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
                 <input 
                   type="text" 
                   name="identifier"
-                  className="input pl-10" 
+                  className="input input-with-icon" 
                   placeholder="admin_username" 
                   required
                 />
@@ -83,7 +83,7 @@ export default function AdminLoginPage() {
                 <input 
                   type="password" 
                   name="password"
-                  className="input pl-10" 
+                  className="input input-with-icon" 
                   placeholder="••••••••" 
                   required
                 />

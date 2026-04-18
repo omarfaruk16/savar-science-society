@@ -25,7 +25,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">Our Office</h3>
-                <p className="text-[#a3b8aa]">123 Science Road, Savar Cantonment Area,<br />Savar, Dhaka 1340, Bangladesh</p>
+                <p className="text-[#a3b8aa]">72/C Birulia Road, Mojidpur,<br />Rajar bari, Savar, Dhaka</p>
               </div>
             </div>
 
@@ -35,7 +35,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">Phone</h3>
-                <p className="text-[#a3b8aa]">+880 1234 567890<br />+880 1987 654321</p>
+                <p className="text-[#a3b8aa]">01522117318<br />01826101160<br />01518405600</p>
               </div>
             </div>
 
@@ -45,7 +45,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">Email</h3>
-                <p className="text-[#a3b8aa]">hello@savarscience.org<br />support@savarscience.org</p>
+                <p className="text-[#a3b8aa]">savarsciencesociety@gmail.com</p>
               </div>
             </div>
           </div>

@@ -57,7 +57,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
             {/* About Event */}
             <div className="prose prose-invert prose-lg max-w-none text-[#a3b8aa] leading-relaxed">
               <h2 className="text-2xl font-bold text-white mb-6">About the Event</h2>
-              <div dangerouslySetInnerHTML={{ __html: event.content.replace(/\n/g, '<br/>') }} />
+              <div dangerouslySetInnerHTML={{ __html: event.content }} />
             </div>
 
             {/* President's Message if available */}

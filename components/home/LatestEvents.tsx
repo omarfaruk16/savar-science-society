@@ -16,9 +16,9 @@ export default function LatestEvents({ events }: LatestEventsProps) {
       <div className="absolute top-1/4 left-0 w-64 h-64 bg-[#16a34a] rounded-full mix-blend-screen filter blur-[100px] opacity-10"></div>
       
       <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+        <div className="flex flex-col items-center text-center md:flex-row md:items-end md:text-left justify-between mb-12 gap-6">
           <div className="max-w-2xl">
-            <div className="badge mb-4">Upcoming</div>
+            <div className="badge mb-4 mx-auto md:mx-0">Upcoming</div>
             <h2 className="section-title mb-4">Latest <span className="text-[#22c55e]">Events</span></h2>
             <p className="section-subtitle">
               Participate in our upcoming competitions, workshops, and fairs to test your knowledge and learn new skills.

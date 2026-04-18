@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { saveBlog } from "@/app/actions/admin-actions";
 import { ArrowLeft, Save, Eye, Loader2 } from "lucide-react";
 import Link from "next/link";
+import RichTextEditor from "@/components/admin/RichTextEditor";
 
 interface BlogFormProps {
   blog?: {
@@ -26,6 +27,23 @@ export default function BlogForm({ blog }: BlogFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [tags, setTags] = useState(blog?.tags?.join(", ") || "");
+  const [imagePreview, setImagePreview] = useState<string | null>(blog?.coverImage || null);
+  const [content, setContent] = useState(blog?.content || "");
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        setError("Image size must be less than 2MB");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const isEdit = !!blog;
 
@@ -35,7 +53,9 @@ export default function BlogForm({ blog }: BlogFormProps) {
     setSuccess(null);
     const formData = new FormData(e.currentTarget);
     formData.set("tags", tags);
+    formData.set("content", content); // Set HTML content from editor
     if (isEdit) formData.set("id", blog.id);
+    if (imagePreview) formData.set("coverImage", imagePreview);
 
     startTransition(async () => {
       const result = await saveBlog(formData);
@@ -82,7 +102,7 @@ export default function BlogForm({ blog }: BlogFormProps) {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-[#a3b8aa] mb-2">Content *</label>
-                <textarea name="content" required rows={16} defaultValue={blog?.content || ""} placeholder="Write your full article content here..." className="input w-full resize-y font-mono text-sm leading-relaxed" />
+                <RichTextEditor content={content} onChange={setContent} />
               </div>
             </div>
           </div>
@@ -121,8 +141,39 @@ export default function BlogForm({ blog }: BlogFormProps) {
                 <input name="author" type="text" defaultValue={blog?.author || "Savar Science Society"} className="input w-full" />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-[#a3b8aa] mb-2">Cover Image URL</label>
-                <input name="coverImage" type="url" defaultValue={blog?.coverImage || ""} placeholder="https://..." className="input w-full" />
+                <label className="block text-sm font-semibold text-[#a3b8aa] mb-2 uppercase tracking-wider">Cover Image</label>
+                <div className="space-y-4">
+                  <div 
+                    className="relative group aspect-video rounded-xl border-2 border-dashed border-[#1a3028] hover:border-[#22c55e] transition-all flex flex-col items-center justify-center p-4 bg-[#050d0a] cursor-pointer overflow-hidden"
+                    onClick={() => document.getElementById("blog-image-input")?.click()}
+                  >
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Preview" className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105" />
+                    ) : (
+                      <div className="flex flex-col items-center gap-2 group-hover:text-[#22c55e] transition-colors">
+                        <Save className="w-8 h-8 text-[#1a3028] group-hover:text-[#22c55e]" />
+                        <span className="text-xs font-semibold uppercase tracking-widest text-[#5a7a68] group-hover:text-[#22c55e]">Upload Image</span>
+                      </div>
+                    )}
+                    <input 
+                      id="blog-image-input"
+                      type="file" 
+                      className="hidden" 
+                      accept="image/jpeg, image/png" 
+                      onChange={handleImageChange} 
+                    />
+                  </div>
+                  <div className="relative">
+                    <input 
+                      name="coverImage" 
+                      type="text" 
+                      value={imagePreview || ""} 
+                      onChange={(e) => setImagePreview(e.target.value)}
+                      placeholder="Or paste an image URL..." 
+                      className="input w-full pl-3 pr-3 text-xs font-mono opacity-50 focus:opacity-100 transition-opacity" 
+                    />
+                  </div>
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-[#a3b8aa] mb-2">Tags (comma-separated)</label>

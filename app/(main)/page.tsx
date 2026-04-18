@@ -9,9 +9,15 @@ import ReviewSection from "@/components/home/ReviewSection";
 import MissionVision from "@/components/home/MissionVision";
 import BlogPreview from "@/components/home/BlogPreview";
 import { getPublishedEvents } from "@/lib/events";
+import prisma from "@/lib/prisma";
 
 export default async function Home() {
   const events = await getPublishedEvents();
+  const latestBlogs = await prisma.blogPost.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+  });
 
   return (
     <div className="pt-20">
@@ -24,7 +30,7 @@ export default async function Home() {
       <MissionVision />
       <GallerySection />
       <ReviewSection />
-      <BlogPreview />
+      <BlogPreview blogs={latestBlogs} />
     </div>
   );
 }

@@ -223,11 +223,25 @@ section { padding: 100px 0; }
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
   font-size: 0.95rem;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
   outline: none;
 }
 .input:focus { border-color: var(--accent-bright); box-shadow: 0 0 0 3px var(--accent-glow); }
 .input::placeholder { color: var(--text-muted); }
+
+.input-with-icon {
+  padding-left: 2.75rem !important;
+}
+
+/* Fix browser autocomplete colors in dark mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--bg-card) inset !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
 
 select.input { cursor: pointer; }
 

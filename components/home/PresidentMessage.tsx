@@ -18,7 +18,7 @@ export default function PresidentMessage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="md:col-span-2 relative order-2 md:order-1"
+              className="md:col-span-2 relative order-2 md:order-1 text-center md:text-left"
             >
               <Quote className="w-16 h-16 text-[#22c55e]/20 absolute -top-8 -left-8 -rotate-12" />
               

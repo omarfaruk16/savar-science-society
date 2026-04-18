@@ -14,12 +14,15 @@ const ProfileSchema = z.object({
   schoolName: z.string().min(2, "School name is required"),
   class: z.string(),
   address: z.string().min(5, "Address must be at least 5 characters"),
-  profileImage: z.string().optional(),
+  profileImage: z.string().nullable().optional(),
 })
 
 export async function updateProfile(formData: FormData) {
   const session = await auth()
   if (!session?.user?.id) throw new Error("Unauthorized")
+
+  console.log("--- Profile Update Started ---");
+  console.log("User ID:", session.user.id);
 
   const rawData = {
     fullNameEn: formData.get("fullNameEn"),
@@ -29,22 +32,34 @@ export async function updateProfile(formData: FormData) {
     schoolName: formData.get("schoolName"),
     class: formData.get("class"),
     address: formData.get("address"),
-    profileImage: formData.get("profileImage"),
+    profileImage: formData.get("profileImage") || null,
   }
 
   const validatedFields = ProfileSchema.safeParse(rawData)
 
   if (!validatedFields.success) {
+    console.error("Validation failed:", validatedFields.error.flatten().fieldErrors);
     const firstError = Object.values(validatedFields.error.flatten().fieldErrors)[0]?.[0];
     return { error: firstError || "Validation failed" }
   }
 
   try {
+    const updateData = { ...validatedFields.data };
+    
+    // If profileImage is explicitly null, we might want to keep the old one 
+    // depending on intent. But here, if it's sent, we update it.
+    
+    console.log("Updating database with:", { 
+        ...updateData, 
+        profileImage: updateData.profileImage ? "Base64 string (truncated)..." : "null" 
+    });
+
     await prisma.user.update({
       where: { id: session.user.id },
-      data: validatedFields.data,
+      data: updateData,
     })
     revalidatePath("/profile")
+    console.log("Profile update successful");
     return { success: "Profile updated successfully!" }
   } catch (error) {
     console.error(error)

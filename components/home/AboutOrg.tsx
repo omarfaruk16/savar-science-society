@@ -52,8 +52,9 @@ export default function AboutOrg() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex flex-col items-center text-center lg:items-start lg:text-left"
           >
-            <div className="badge mb-4">About Us</div>
+            <div className="badge mb-4 mx-auto lg:mx-0">About Us</div>
             <h2 className="section-title mb-6 leading-tight">
               Building a <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#16a34a] to-[#22c55e]">Brighter Savar</span>
             </h2>
