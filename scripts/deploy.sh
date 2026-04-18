@@ -1,47 +1,25 @@
-#!/usr/bin/env bash
+#!/bin/sh
+set -e
 
-# Exit on error, undefined variables, and pipe failures
-set -Eeuo pipefail
+echo "🚀 Starting deployment..."
 
-# Configuration
-PROJECT_DIR="/root/savar-science-society"
-APP_NAME="sss_app"
+cd /root/savar-science-society
 
-# Log message function
-log() {
-    echo -e "\033[1;32m[DEPLOY] $1\033[0m"
-}
+echo "📦 Pulling latest code from GitHub..."
+git pull origin main
 
-# 1. CD to project directory
-log "Navigating to project directory..."
-cd "$PROJECT_DIR"
+echo "🔨 Building Docker containers..."
+docker compose build --no-cache
 
-# 2. Update code from GitHub
-log "Fetching latest changes from Git..."
-git fetch --all --prune
-log "Resetting local branch to origin/main..."
-git reset --hard origin/main
+echo "🔄 Restarting containers..."
+docker compose down
+docker compose up -d
 
-# 3. Stop current containers
-log "Shutting down existing containers..."
-docker compose down --remove-orphans
+echo "⏳ Waiting for containers to start..."
+sleep 10
 
-# 4. Build new containers
-log "Building Docker images (pulling latest base and no cache)..."
-docker compose build --pull --no-cache
+echo "🗄️ Running database migrations..."
+docker compose exec app node /app/node_modules/prisma/build/index.js db push
 
-# 5. Start containers
-log "Starting containers in detached mode..."
-docker compose up -d --remove-orphans
-
-# 6. Wait for DB and App to be ready
-log "Waiting 15 seconds for services to initialize..."
-sleep 15
-
-# 7. Run database migrations
-log "Running Prisma database migrations..."
-docker compose exec app npx prisma migrate deploy
-
-# 8. Show status
-log "Deployment complete! Current status:"
-docker compose ps
+echo "✅ Deployment complete!"
+echo "🌐 Site is live at https://www.savar-science-society.com"

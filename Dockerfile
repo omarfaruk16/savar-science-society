@@ -13,6 +13,7 @@ RUN apk add --no-cache openssl
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+COPY prisma.config.ts ./
 
 # Generate Prisma Client
 RUN npx prisma generate
@@ -34,11 +35,13 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy essential files
+COPY .env ./
+COPY prisma.config.ts ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 
 # Copy Prisma engine and client (critical for standalone mode)
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules ./node_modules
 
 # Set correct permissions
 RUN mkdir .next

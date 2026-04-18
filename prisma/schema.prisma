@@ -1,19 +1,18 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
-  id             String   @id @default(cuid())
+  id             String         @id @default(cuid())
   fullNameEn     String
   fullNameBn     String
-  email          String   @unique
-  mobileNumber   String   @unique
+  email          String         @unique
+  mobileNumber   String         @unique
   guardianNumber String
   schoolName     String
   class          String
@@ -21,10 +20,10 @@ model User {
   address        String
   profileImage   String?
   passwordHash   String?
-  provider       String   @default("credentials")
-  role           Role     @default(STUDENT)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  provider       String         @default("credentials")
+  role           Role           @default(STUDENT)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
   registrations  Registration[]
 }
 
@@ -34,8 +33,6 @@ model Admin {
   passwordHash String
   createdAt    DateTime @default(now())
 }
-
-// Event model removed in favor of file-based storage in app/data/events
 
 model BlogPost {
   id         String   @id @default(cuid())
@@ -92,7 +89,7 @@ model Registration {
   id            String   @id @default(cuid())
   userId        String
   eventId       String
-  paymentStatus String   @default("PENDING") // PENDING, PAID, CANCELLED
+  paymentStatus String   @default("PENDING")
   transactionId String?
   user          User     @relation(fields: [userId], references: [id])
   event         Event    @relation(fields: [eventId], references: [id])
