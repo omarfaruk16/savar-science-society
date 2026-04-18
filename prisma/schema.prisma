@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             String   @id @default(cuid())
+  fullNameEn     String
+  fullNameBn     String
+  email          String   @unique
+  mobileNumber   String   @unique
+  guardianNumber String
+  schoolName     String
+  class          String
+  dateOfBirth    DateTime
+  address        String
+  profileImage   String?
+  passwordHash   String?
+  provider       String   @default("credentials")
+  role           Role     @default(STUDENT)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  registrations  Registration[]
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+// Event model removed in favor of file-based storage in app/data/events
+
+model BlogPost {
+  id         String   @id @default(cuid())
+  title      String
+  slug       String   @unique
+  coverImage String?
+  excerpt    String
+  content    String
+  author     String   @default("Savar Science Society")
+  tags       String[]
+  views      Int      @default(0)
+  published  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  url       String
+  caption   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  name      String
+  school    String
+  text      String
+  rating    Int      @default(5)
+  image     String?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Event {
+  id                 String         @id @default(cuid())
+  title              String
+  slug               String         @unique
+  coverImage         String?
+  date               DateTime
+  description        String
+  content            String
+  venue              String
+  fee                Float          @default(0)
+  isRegistrationOpen Boolean        @default(true)
+  published          Boolean        @default(false)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  registrations      Registration[]
+}
+
+model Registration {
+  id            String   @id @default(cuid())
+  userId        String
+  eventId       String
+  paymentStatus String   @default("PENDING") // PENDING, PAID, CANCELLED
+  transactionId String?
+  user          User     @relation(fields: [userId], references: [id])
+  event         Event    @relation(fields: [eventId], references: [id])
+  createdAt     DateTime @default(now())
+
+  @@unique([userId, eventId])
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}

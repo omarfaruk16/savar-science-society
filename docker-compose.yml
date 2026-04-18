@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: savar_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: sss_admin
+      POSTGRES_PASSWORD: sss_password
+      POSTGRES_DB: savar_science_society
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: savar_app
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: "postgresql://sss_admin:sss_password@savar_postgres:5432/savar_science_society?schema=public"
+      NEXTAUTH_URL: "http://localhost:3000"
+      NEXTAUTH_SECRET: "AABBCC11223344556677889900QWERTYUIOPASDFGHJKL"
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:

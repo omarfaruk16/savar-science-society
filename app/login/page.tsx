@@ -1,0 +1,191 @@
+"use client";
+
+import Link from "next/link";
+import { User, Lock, Globe, ArrowRight, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import { Suspense } from "react";
+
+import { auth as firebaseAuth } from "@/lib/firebase";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/profile";
+  
+  const [loading, setLoading] = useState(false);
+  const [firebaseLoading, setFirebaseLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleFirebaseLogin = async () => {
+    setError(null);
+    setFirebaseLoading(true);
+    const provider = new GoogleAuthProvider();
+
+    try {
+      const result = await signInWithPopup(firebaseAuth, provider);
+      const idToken = await result.user.getIdToken();
+
+      const res = await signIn("credentials", {
+        redirect: false,
+        firebaseToken: idToken,
+      });
+
+      if (res?.error) {
+        setError("Failed to link Firebase account with local database.");
+        setFirebaseLoading(false);
+      } else {
+        router.push(callbackUrl);
+        router.refresh();
+      }
+    } catch (err: any) {
+      console.error("Firebase Login Error:", err);
+      setError(err.message || "Firebase login failed.");
+      setFirebaseLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const identifier = formData.get("identifier") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        identifier,
+        password,
+      });
+
+      if (res?.error) {
+        setError("Invalid email, mobile number, or password.");
+        setLoading(false);
+      } else {
+        router.push(callbackUrl);
+        router.refresh();
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="pt-32 pb-16 bg-[#050d0a] min-h-screen flex items-center justify-center">
+      <div className="container mx-auto px-4 relative z-10 w-full max-w-md">
+        
+        {/* Decorative background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-lg bg-[#16a34a] rounded-full mix-blend-screen filter blur-[150px] opacity-10 z-0 pointer-events-none"></div>
+        
+        <div className="card p-8 md:p-10 relative z-10">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
+            <p className="text-[#a3b8aa] text-sm">Sign in to your SSS account</p>
+          </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-md text-red-500 text-sm text-center font-medium">
+              {error}
+            </div>
+          )}
+
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            <div>
+              <label className="block text-sm font-medium text-[#a3b8aa] mb-2">Email or Mobile Number</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="h-5 w-5 text-[#5a7a68]" />
+                </div>
+                <input 
+                  type="text" 
+                  name="identifier"
+                  className="input pl-10" 
+                  placeholder="name@school.com or 01..." 
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-[#a3b8aa]">Password</label>
+                <Link href="#" className="text-xs text-[#22c55e] hover:text-white transition-colors">Forgot password?</Link>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-[#5a7a68]" />
+                </div>
+                <input 
+                  type="password" 
+                  name="password"
+                  className="input pl-10" 
+                  placeholder="••••••••" 
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" disabled={loading || firebaseLoading} className="btn-primary w-full justify-center mt-6 disabled:opacity-50 disabled:cursor-not-allowed">
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Sign In"}
+            </button>
+          </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-[#1a3028]"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-[#0f1d17] text-[#a3b8aa]">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button 
+                onClick={handleFirebaseLogin}
+                disabled={loading || firebaseLoading}
+                type="button" 
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-[#1a3028] rounded-md shadow-sm bg-[#050d0a] text-sm font-medium text-white hover:bg-[#1a3028] hover:border-[#224035] transition-colors disabled:opacity-50"
+              >
+                {firebaseLoading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <>
+                    <Globe className="w-5 h-5" />
+                    Google (Firebase)
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          <p className="mt-8 text-center text-sm text-[#a3b8aa]">
+            Don't have an account?{" "}
+            <Link href="/register" className="font-bold text-[#22c55e] hover:text-white transition-colors group">
+              Register now <ArrowRight className="inline-block w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#050d0a] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-[#22c55e]" />
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
+  );
+}

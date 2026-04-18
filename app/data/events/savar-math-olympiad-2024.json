@@ -1,0 +1,16 @@
+{
+  "title": "Savar Math Olympiad 2024",
+  "slug": "savar-math-olympiad-2024",
+  "coverImage": "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80&w=800",
+  "date": "2024-10-15T09:00:00Z",
+  "description": "Join the largest math competition in Savar. Open for classes 6 to 10.",
+  "content": "The Savar Math Olympiad 2024 is organized by the Savar Science Society to foster mathematical thinking and competition among students in the region. Participants will face a series of challenging problems that test their logic, problem-solving, and analytical skills.\n\nDate: October 15, 2024\nTime: 9:00 AM - 1:00 PM\nVenue: Savar Cantonment Public School\n\nCategories:\n- Category A: Class 6-7\n- Category B: Class 8-9\n- Category C: Class 10",
+  "venue": "Savar Cantonment Public School",
+  "keyInfo": [
+    { "label": "Difficulty", "value": "Advanced" },
+    { "label": "Duration", "value": "4 Hours" },
+    { "label": "Prize Pool", "value": "50,000 BDT" }
+  ],
+  "published": true,
+  "registrationOpen": true
+}
