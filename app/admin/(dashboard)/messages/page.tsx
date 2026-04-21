@@ -47,9 +47,11 @@ export default async function AdminMessagesPage() {
 
                 <div className="flex items-center gap-3">
                   <DeleteButton 
-                    id={msg.id} 
-                    action={deleteContactMessage} 
-                    className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500/20 transition-colors"
+                    label="message"
+                    action={async () => {
+                      "use server";
+                      await deleteContactMessage(msg.id);
+                    }}
                   />
                 </div>
               </div>
