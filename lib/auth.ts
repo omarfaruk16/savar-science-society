@@ -29,33 +29,46 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             const decodedToken = await adminAuth.verifyIdToken(credentials.firebaseToken as string);
             const email = decodedToken.email;
 
-            if (!email) return null;
+            if (!email) {
+              console.error("Firebase Login Error: Token does not contain an email.");
+              return null;
+            }
 
             // Find or create user
             let user = await prisma.user.findUnique({ where: { email } });
             
             if (!user) {
-              // Create a minimal student record if it's their first time logging in via Google
-              user = await prisma.user.create({
-                data: {
-                  email,
-                  fullNameEn: decodedToken.name || email.split("@")[0],
-                  fullNameBn: decodedToken.name || email.split("@")[0],
-                  mobileNumber: decodedToken.phone_number || `fb_${decodedToken.uid}`,
-                  guardianNumber: "N/A",
-                  schoolName: "Not Specified",
-                  class: "6",
-                  address: "Not Specified",
-                  dateOfBirth: new Date(),
-                  profileImage: decodedToken.picture || null,
-                  provider: "firebase",
+              console.log(`Creating new user for email: ${email}`);
+              try {
+                // Create a minimal student record if it's their first time logging in via Google
+                user = await prisma.user.create({
+                  data: {
+                    email,
+                    fullNameEn: decodedToken.name || email.split("@")[0],
+                    fullNameBn: decodedToken.name || email.split("@")[0],
+                    mobileNumber: decodedToken.phone_number || `fb_${decodedToken.uid}`,
+                    guardianNumber: "N/A",
+                    schoolName: "Not Specified",
+                    class: "6",
+                    address: "Not Specified",
+                    dateOfBirth: new Date(),
+                    profileImage: decodedToken.picture || null,
+                    provider: "firebase",
+                  }
+                });
+              } catch (createError: any) {
+                console.error("Prisma User Creation Error:", createError);
+                // Specifically check for unique constraint violations
+                if (createError.code === "P2002") {
+                  console.error("Duplicate field error:", createError.meta?.target);
                 }
-              });
+                return null;
+              }
             }
 
             return { id: user.id, email: user.email, role: user.role };
           } catch (error) {
-            console.error("Firebase Auth Error:", error);
+            console.error("Firebase Auth Verification Error:", error);
             return null;
           }
         }

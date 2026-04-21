@@ -194,7 +194,7 @@ function MemberCard({ member, isLarge = false, index = 0, isAdvisor = false }: {
       `}>
         {/* Glow effect */}
         <div className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-[80px] transition-all duration-700 ${isAdvisor ? "bg-[#22c55e]/20 group-hover:bg-[#22c55e]/30" : "bg-[#22c55e]/10 group-hover:bg-[#22c55e]/20"}`} />
-        
+
         {/* Image / Avatar */}
         <div className={`
           relative mx-auto rounded-2xl overflow-hidden border-2 border-[#1a3028] 
@@ -203,17 +203,17 @@ function MemberCard({ member, isLarge = false, index = 0, isAdvisor = false }: {
           ${isAdvisor ? "border-[#22c55e]/40" : ""}
         `}>
           {member.image ? (
-            <img 
-              src={member.image} 
-              alt={member.name} 
-              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" 
+            <img
+              src={member.image}
+              alt={member.name}
+              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
             />
           ) : (
             <div className="w-full h-full bg-[#1a3028] flex items-center justify-center">
               <User className="w-1/2 h-1/2 text-[#22c55e]/20" />
             </div>
           )}
-          
+
           {/* Subtle overlay gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#050d0a]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
@@ -224,7 +224,7 @@ function MemberCard({ member, isLarge = false, index = 0, isAdvisor = false }: {
             <Briefcase className="w-3 h-3" />
             {member.role}
           </div>
-          
+
           <h3 className={`font-semibold text-white group-hover:text-[#22c55e] transition-colors ${isLarge ? "text-2xl md:text-3xl mb-2" : "text-xl mb-1"}`}>
             {member.name}
           </h3>
@@ -234,7 +234,7 @@ function MemberCard({ member, isLarge = false, index = 0, isAdvisor = false }: {
               {member.title}
             </p>
           )}
-          
+
           <div className="flex items-center justify-center gap-2 text-[#a3b8aa] group-hover:text-[#f0fdf4] transition-colors">
             <GraduationCap className="w-4 h-4 text-[#22c55e]" />
             <p className={`${isLarge ? "text-base" : "text-sm"}`}>

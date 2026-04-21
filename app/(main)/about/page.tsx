@@ -18,7 +18,7 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold text-white mb-6">Our History</h2>
           <div className="space-y-4 text-[#a3b8aa] font-bn text-lg leading-relaxed">
             <p>
-              সাভার সায়েন্স সোসাইটি (SSS) প্রতিষ্ঠিত হয় ২০২০ সালে একদল উদ্যমী তরুণ শিক্ষার্থীর হাত ধরে। সাভারের বিভিন্ন স্কুল ও কলেজের শিক্ষার্থীদের বিজ্ঞান ও প্রযুক্তির প্রতি আগ্রহী করে তোলাই ছিল এর মূল উদ্দেশ্য। 
+              সাভার সায়েন্স সোসাইটি (SSS) প্রতিষ্ঠিত হয় ২০২০ সালে একদল উদ্যমী তরুণ শিক্ষার্থীর হাত ধরে। সাভারের বিভিন্ন স্কুল ও কলেজের শিক্ষার্থীদের বিজ্ঞান ও প্রযুক্তির প্রতি আগ্রহী করে তোলাই ছিল এর মূল উদ্দেশ্য।
             </p>
             <p>
               শুরুর দিকে ছোট পরিসরে বিজ্ঞান আড্ডা ও কর্মশালার মাধ্যমে এর কার্যক্রম শুরু হলেও, খুব দ্রুতই এটি সাভারের অন্যতম প্রধান বিজ্ঞানভিত্তিক প্ল্যাটফর্মে পরিণত হয়। বর্তমানে আমরা নিয়মিত গণিত অলিম্পিয়াড, বিজ্ঞান মেলা, এবং প্রোগ্রামিং প্রতিযোগিতা আয়োজন করছি।
@@ -45,7 +45,7 @@ export default function AboutPage() {
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="card p-6 text-center group">
                 <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-[#1a3028] group-hover:border-[#22c55e] transition-colors mb-4 bg-[#1a3028]">
-                  <img src={`https://i.pravatar.cc/150?img=${i+20}`} alt="Team member" className="w-full h-full object-cover" />
+                  <img src={`https://i.pravatar.cc/150?img=${i + 20}`} alt="Team member" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="text-white font-bold text-lg">Executive Member {i}</h3>
                 <p className="text-sm text-[#22c55e]">Operations</p>

@@ -32,14 +32,14 @@ export default function GallerySection() {
         {/* Gradients to fade edges */}
         <div className="absolute top-0 left-0 bottom-0 w-32 bg-gradient-to-r from-[#050d0a] to-transparent z-10"></div>
         <div className="absolute top-0 right-0 bottom-0 w-32 bg-gradient-to-l from-[#050d0a] to-transparent z-10"></div>
-        
+
         <div className="flex w-[200%] animate-scroll-x hover:[animation-play-state:paused]">
           <div className="flex w-1/2 justify-around gap-6 px-3">
             {images.map((src, i) => (
               <div key={i} className="flex-shrink-0 w-72 h-80 rounded-2xl overflow-hidden border border-[#1a3028] group">
-                <img 
-                  src={src} 
-                  alt={`Gallery image ${i}`} 
+                <img
+                  src={src}
+                  alt={`Gallery image ${i}`}
                   className="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-2 transition-all duration-700"
                 />
               </div>
@@ -48,9 +48,9 @@ export default function GallerySection() {
           <div className="flex w-1/2 justify-around gap-6 px-3">
             {images.map((src, i) => (
               <div key={`dup-${i}`} className="flex-shrink-0 w-72 h-80 rounded-2xl overflow-hidden border border-[#1a3028] group">
-                <img 
-                  src={src} 
-                  alt={`Gallery image duplicate ${i}`} 
+                <img
+                  src={src}
+                  alt={`Gallery image duplicate ${i}`}
                   className="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-2 transition-all duration-700"
                 />
               </div>
