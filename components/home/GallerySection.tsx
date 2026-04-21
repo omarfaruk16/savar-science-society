@@ -22,7 +22,7 @@ export default function GallerySection() {
         <div className="flex flex-col items-center text-center justify-center gap-6">
           <div className="max-w-2xl">
             <div className="badge mb-4 mx-auto">Memories</div>
-            <h2 className="section-title">Our <span className="text-[#22c55e]">Gallery</span></h2>
+            <h2 className="section-title mb-6">Our <span className="text-[#22c55e]">Gallery</span></h2>
           </div>
         </div>
       </div>

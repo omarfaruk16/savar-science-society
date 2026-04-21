@@ -26,6 +26,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
 
           try {
+            if (!process.env.AUTH_SECRET && process.env.NODE_ENV === "production") {
+              console.error("CRITICAL: AUTH_SECRET is not set in production. Login will FAIL.");
+            }
+
             const decodedToken = await adminAuth.verifyIdToken(credentials.firebaseToken as string);
             const email = decodedToken.email;
 
@@ -34,41 +38,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               return null;
             }
 
-            // Find or create user
-            let user = await prisma.user.findUnique({ where: { email } });
-            
-            if (!user) {
-              console.log(`Creating new user for email: ${email}`);
-              try {
-                // Create a minimal student record if it's their first time logging in via Google
-                user = await prisma.user.create({
-                  data: {
-                    email,
-                    fullNameEn: decodedToken.name || email.split("@")[0],
-                    fullNameBn: decodedToken.name || email.split("@")[0],
-                    mobileNumber: decodedToken.phone_number || `fb_${decodedToken.uid}`,
-                    guardianNumber: "N/A",
-                    schoolName: "Not Specified",
-                    class: "6",
-                    address: "Not Specified",
-                    dateOfBirth: new Date(),
-                    profileImage: decodedToken.picture || null,
-                    provider: "firebase",
-                  }
-                });
-              } catch (createError: any) {
-                console.error("Prisma User Creation Error:", createError);
-                // Specifically check for unique constraint violations
-                if (createError.code === "P2002") {
-                  console.error("Duplicate field error:", createError.meta?.target);
-                }
-                return null;
+            // Find or create user using upsert for atomic operation
+            const user = await prisma.user.upsert({
+              where: { email },
+              update: {
+                // Update profile image if it changed
+                profileImage: decodedToken.picture || undefined,
+              },
+              create: {
+                email,
+                fullNameEn: decodedToken.name || email.split("@")[0],
+                fullNameBn: decodedToken.name || email.split("@")[0],
+                mobileNumber: decodedToken.phone_number || `fb_${decodedToken.uid}`,
+                guardianNumber: "N/A",
+                schoolName: "Not Specified",
+                class: "6",
+                address: "Not Specified",
+                dateOfBirth: new Date(),
+                profileImage: decodedToken.picture || null,
+                provider: "firebase",
               }
-            }
+            });
 
             return { id: user.id, email: user.email, role: user.role };
-          } catch (error) {
-            console.error("Firebase Auth Verification Error:", error);
+          } catch (error: any) {
+            console.error("Firebase Auth Verification Error:", error.message || error);
             return null;
           }
         }

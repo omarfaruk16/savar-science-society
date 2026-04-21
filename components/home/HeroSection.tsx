@@ -96,11 +96,11 @@ export default function HeroSection() {
 
             <div className="absolute -bottom-10 -left-6 glass px-6 py-4 rounded-2xl border border-[#22c55e]/50 shadow-[0_10px_30px_rgba(0,0,0,0.3)] flex items-center gap-4 animate-float z-20 hover:border-[#22c55e] transition-colors cursor-pointer" style={{ animationDelay: '2s' }}>
               <div className="w-12 h-12 rounded-full bg-[#16a34a]/20 flex items-center justify-center shadow-inner">
-                <span className="text-[#22c55e] text-2xl">🔬</span>
+                <span className="text-[#22c55e] text-2xl">🥇</span>
               </div>
               <div>
-                <div className="text-[10px] text-[#a3b8aa] uppercase tracking-tighter">Annual Flagship</div>
-                <div className="font-bold text-white text-base">Science Fair</div>
+                <div className="text-[10px] text-[#a3b8aa] uppercase tracking-tighter">Price giving ceremony</div>
+                <div className="font-bold text-white text-base">Math & Science Olympiad 2.0</div>
               </div>
             </div>
           </div>

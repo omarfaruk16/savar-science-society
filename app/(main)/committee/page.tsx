@@ -7,10 +7,9 @@ const committeeMembers = [
   {
     name: "Md. Touhid Hossain",
     role: "Chief Advisor",
-    university: "Jahangirnagar University",
+    university: "Principle of Savar Model College",
     image: "/Md. Touhid Hossain.jpeg",
     level: "advisor",
-    title: "Adviser, Foreign Affairs, Government of Bangladesh"
   },
   {
     name: "MD Mujahidul Islam",
