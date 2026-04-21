@@ -1,8 +1,32 @@
 "use client";
 
 import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { submitContactMessage } from "@/app/actions/contact-actions";
+import { useState } from "react";
 
 export default function ContactPage() {
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsPending(true);
+    setError(null);
+    setSuccess(false);
+
+    const formData = new FormData(e.currentTarget);
+    const result = await submitContactMessage(formData);
+
+    setIsPending(false);
+    if (result.error) {
+      setError(result.error);
+    } else {
+      setSuccess(true);
+      (e.target as HTMLFormElement).reset();
+    }
+  }
+
   return (
     <div className="pt-24 pb-16 bg-[#050d0a] min-h-screen">
       <div className="container mx-auto">
@@ -53,32 +77,52 @@ export default function ContactPage() {
           {/* Contact Form */}
           <div className="card p-8 md:p-10">
             <h3 className="text-2xl font-bold text-white mb-6">Send a Message</h3>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-[#a3b8aa] mb-2">Full Name</label>
-                  <input type="text" className="input" placeholder="John Doe" />
+            
+            {success ? (
+              <div className="glass p-8 text-center rounded-2xl border-[#22c55e]/30">
+                <div className="w-16 h-16 bg-[#22c55e]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Send className="w-8 h-8 text-[#22c55e]" />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-[#a3b8aa] mb-2">Email Address</label>
-                  <input type="email" className="input" placeholder="john@example.com" />
+                <h4 className="text-xl font-bold text-white mb-2">Message Sent!</h4>
+                <p className="text-[#a3b8aa]">Thank you for reaching out. We will get back to you as soon as possible.</p>
+                <button onClick={() => setSuccess(false)} className="mt-6 text-[#22c55e] font-bold hover:underline">Send another message</button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-[#a3b8aa] mb-2">Full Name</label>
+                    <input type="text" name="name" required className="input" placeholder="John Doe" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-[#a3b8aa] mb-2">Email Address</label>
+                    <input type="email" name="email" required className="input" placeholder="john@example.com" />
+                  </div>
                 </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-[#a3b8aa] mb-2">Subject</label>
-                <input type="text" className="input" placeholder="How can we help you?" />
-              </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-[#a3b8aa] mb-2">Subject</label>
+                  <input type="text" name="subject" required className="input" placeholder="How can we help you?" />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-[#a3b8aa] mb-2">Message</label>
-                <textarea className="input min-h-[150px] resize-y" placeholder="Type your message here..."></textarea>
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#a3b8aa] mb-2">Message</label>
+                  <textarea name="message" required className="input min-h-[150px] resize-y" placeholder="Type your message here..."></textarea>
+                </div>
 
-              <button type="submit" className="btn-primary w-full justify-center">
-                Send Message <Send className="w-4 h-4" />
-              </button>
-            </form>
+                {error && (
+                  <div className="text-red-500 text-sm font-medium">{error}</div>
+                )}
+
+                <button 
+                  type="submit" 
+                  disabled={isPending}
+                  className="btn-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isPending ? "Sending..." : "Send Message"} <Send className="w-4 h-4 ml-2" />
+                </button>
+              </form>
+            )}
           </div>
         </div>
 
