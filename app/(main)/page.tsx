@@ -4,6 +4,7 @@ import LatestEvents from "@/components/home/LatestEvents";
 import AboutOrg from "@/components/home/AboutOrg";
 import FounderMessage from "@/components/home/FounderMessage";
 import PresidentMessage from "@/components/home/PresidentMessage";
+import LeadershipSection from "@/components/home/LeadershipSection";
 import GallerySection from "@/components/home/GallerySection";
 import ReviewSection from "@/components/home/ReviewSection";
 import MissionVision from "@/components/home/MissionVision";
@@ -27,6 +28,7 @@ export default async function Home() {
       <AboutOrg />
       <FounderMessage />
       <PresidentMessage />
+      <LeadershipSection />
       <MissionVision />
       <GallerySection />
       <ReviewSection />

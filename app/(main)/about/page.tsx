@@ -1,4 +1,6 @@
 import { Users, Award, Target, BookOpen } from "lucide-react";
+import LeadershipSection from "@/components/home/LeadershipSection";
+import Link from "next/link";
 
 export default function AboutPage() {
   return (
@@ -39,19 +41,14 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div>
-          <h2 className="text-3xl font-bold text-center text-white mb-10">Our Leadership Team</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="card p-6 text-center group">
-                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-2 border-[#1a3028] group-hover:border-[#22c55e] transition-colors mb-4 bg-[#1a3028]">
-                  <img src={`https://i.pravatar.cc/150?img=${i + 20}`} alt="Team member" className="w-full h-full object-cover" />
-                </div>
-                <h3 className="text-white font-bold text-lg">Executive Member {i}</h3>
-                <p className="text-sm text-[#22c55e]">Operations</p>
-              </div>
-            ))}
-          </div>
+        {/* Leadership Section */}
+        <LeadershipSection />
+        
+        <div className="text-center mt-12 mb-20">
+          <p className="text-[#a3b8aa] mb-6">Want to see our full advisory board and executive team?</p>
+          <Link href="/committee" className="btn-secondary">
+            View Full Committee
+          </Link>
         </div>
       </div>
     </div>

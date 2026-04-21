@@ -29,7 +29,7 @@ export default function FounderMessage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050d0a] via-transparent to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4 text-center">
                   <div className="font-bold text-white text-lg">Abu Baakr Siddique</div>
-                  <div className="text-xs text-[#22c55e] font-semibold uppercase tracking-wider">Founder</div>
+                  <div className="text-xs text-[#22c55e] font-semibold uppercase tracking-wider">Founder & Chairman</div>
                 </div>
               </div>
             </motion.div>
