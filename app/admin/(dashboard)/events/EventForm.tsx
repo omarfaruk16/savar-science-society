@@ -3,7 +3,7 @@
 import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { saveEvent } from "@/app/actions/admin-actions";
-import { ArrowLeft, Save, Eye, Loader2, Calendar, MapPin, DollarSign, Link2 } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Calendar, MapPin, DollarSign, Link2, ImageIcon, X } from "lucide-react";
 import Link from "next/link";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 
@@ -41,7 +41,8 @@ export default function EventForm({ event }: EventFormProps) {
   const [content, setContent] = useState(event?.content || "");
   const [title, setTitle] = useState(event?.title || "");
   const [slug, setSlug] = useState(event?.slug || "");
-  const [slugEdited, setSlugEdited] = useState(!!event); // if editing, slug is locked
+  const [slugEdited, setSlugEdited] = useState(!!event);
+  const [isUploading, setIsUploading] = useState(false);
 
   // Auto-generate slug from title only when creating new (not editing)
   useEffect(() => {
@@ -50,18 +51,28 @@ export default function EventForm({ event }: EventFormProps) {
     }
   }, [title, slugEdited, event]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        setError("Image size must be less than 2MB");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Image must be under 5MB");
+      return;
+    }
+
+    setIsUploading(true);
+    setError(null);
+    try {
+      const uploadForm = new FormData();
+      uploadForm.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: uploadForm });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+      setImagePreview(data.url);
+    } catch (err: any) {
+      setError(err.message || "Image upload failed");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -238,37 +249,71 @@ export default function EventForm({ event }: EventFormProps) {
               <h3 className="font-bold text-white border-b border-[#1a3028] pb-3">Media</h3>
               <div>
                 <label className="block text-sm font-semibold text-[#a3b8aa] mb-2 uppercase tracking-wider text-xs">Cover Image</label>
-                <div className="space-y-4">
-                  <div 
-                    className="relative group aspect-video rounded-xl border-2 border-dashed border-[#1a3028] hover:border-[#22c55e] transition-all flex flex-col items-center justify-center p-4 bg-[#050d0a] cursor-pointer overflow-hidden"
-                    onClick={() => document.getElementById("event-image-input")?.click()}
-                  >
+                <div className="space-y-3">
+                  {/* Image preview */}
+                  <div className="relative aspect-video rounded-xl border-2 border-dashed border-[#1a3028] bg-[#050d0a] overflow-hidden">
                     {imagePreview ? (
-                      <img src={imagePreview} alt="Preview" className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105" />
+                      <>
+                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => setImagePreview(null)}
+                          className="absolute top-2 right-2 w-7 h-7 bg-black/70 hover:bg-red-500/80 rounded-full flex items-center justify-center transition-colors"
+                        >
+                          <X className="w-4 h-4 text-white" />
+                        </button>
+                      </>
                     ) : (
-                      <div className="flex flex-col items-center gap-2 group-hover:text-[#22c55e] transition-colors">
-                        <Save className="w-8 h-8 text-[#1a3028] group-hover:text-[#22c55e]" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#5a7a68] group-hover:text-[#22c55e]">Upload Media</span>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => document.getElementById("event-image-input")?.click()}
+                        disabled={isUploading}
+                        className="w-full h-full flex flex-col items-center justify-center gap-2 hover:bg-[#0a1410] transition-colors"
+                      >
+                        {isUploading ? (
+                          <>
+                            <Loader2 className="w-8 h-8 text-[#22c55e] animate-spin" />
+                            <span className="text-xs text-[#22c55e]">Uploading...</span>
+                          </>
+                        ) : (
+                          <>
+                            <ImageIcon className="w-8 h-8 text-[#1a3028]" />
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#5a7a68]">Click to upload</span>
+                            <span className="text-[9px] text-[#3a5040]">JPEG, PNG, WebP — max 5MB</span>
+                          </>
+                        )}
+                      </button>
                     )}
-                    <input 
+                    <input
                       id="event-image-input"
-                      type="file" 
-                      className="hidden" 
-                      accept="image/jpeg, image/png" 
-                      onChange={handleImageChange} 
+                      type="file"
+                      className="hidden"
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={handleImageChange}
                     />
                   </div>
+
+                  {/* Or paste URL */}
                   <div className="relative">
-                    <input 
-                      name="coverImage" 
-                      type="text" 
-                      value={imagePreview || ""} 
-                      onChange={(e) => setImagePreview(e.target.value)}
-                      placeholder="Paste image URL here..." 
-                      className="input w-full pl-3 pr-3 text-[10px] font-mono opacity-50 focus:opacity-100 transition-opacity" 
+                    <input
+                      name="coverImage"
+                      type="text"
+                      value={imagePreview || ""}
+                      onChange={(e) => setImagePreview(e.target.value || null)}
+                      placeholder="Or paste image URL here..."
+                      className="input w-full text-xs font-mono"
                     />
                   </div>
+
+                  {imagePreview && (
+                    <button
+                      type="button"
+                      onClick={() => document.getElementById("event-image-input")?.click()}
+                      className="w-full text-xs text-[#a3b8aa] hover:text-[#22c55e] transition-colors text-center py-1"
+                    >
+                      Click to replace image
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
