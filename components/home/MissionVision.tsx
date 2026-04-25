@@ -61,9 +61,9 @@ export default function MissionVision() {
 
         {/* Goals List */}
         <div className="mb-20">
-          <div className="text-center mb-12">
+          <div className="text-left mb-12">
             <h2 className="section-title text-3xl font-bn mb-4">আমাদের সুনির্দিষ্ট লক্ষ্যসমূহ (Goals)</h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-[#16a34a] to-[#22c55e] mx-auto rounded"></div>
+            <div className="h-1 w-24 bg-gradient-to-r from-[#16a34a] to-[#22c55e] rounded"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -76,8 +76,8 @@ export default function MissionVision() {
                 transition={{ delay: index * 0.1 }}
                 className="bg-[#0f1d17] border border-[#1a3028] p-6 rounded-xl hover:border-[#22c55e]/50 transition-colors"
               >
-                <div className="text-[#22c55e] font-bold text-lg mb-2 font-bn">লক্ষ্য ০{index + 1}</div>
-                <h4 className="text-white font-bold text-xl mb-3 font-bn">{goal.title}</h4>
+                <div className="text-[#22c55e] font-bold text-base mb-2 font-bn">লক্ষ্য ০{index + 1}</div>
+                <h4 className="text-white font-bold text-lg md:text-xl mb-3 font-bn">{goal.title}</h4>
                 <p className="text-[#a3b8aa] font-bn leading-relaxed">{goal.desc}</p>
               </motion.div>
             ))}
@@ -86,11 +86,11 @@ export default function MissionVision() {
 
         {/* Core Values */}
         <div>
-          <div className="text-center mb-10">
+          <div className="text-left mb-10">
             <h2 className="section-title text-3xl font-bn mb-4">আমাদের পরিচালনার ভিত্তি (Core Values)</h2>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-start gap-4">
             {values.map((value, index) => (
               <motion.div
                 key={index}
@@ -98,7 +98,7 @@ export default function MissionVision() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                className="px-6 py-3 rounded-full bg-gradient-to-r from-[#0f1d17] to-[#1a3028] border border-[#224035] text-white font-bn text-lg font-medium shadow-lg hover:shadow-[#22c55e]/20 transition-all cursor-default"
+                className="px-4 py-2 md:px-6 md:py-3 rounded-full bg-gradient-to-r from-[#0f1d17] to-[#1a3028] border border-[#224035] text-white font-bn text-sm md:text-lg font-medium shadow-lg hover:shadow-[#22c55e]/20 transition-all cursor-default"
               >
                 {value}
               </motion.div>

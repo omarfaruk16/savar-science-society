@@ -43,10 +43,10 @@ export default function OlympiadHistory() {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#22c55e]/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
 
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className="text-left mb-16">
           <div className="badge mb-4">Our Legacy</div>
           <h2 className="section-title">Olympiad <span className="text-[#22c55e]">History</span></h2>
-          <p className="section-subtitle mx-auto">
+          <p className="section-subtitle">
             Relive the moments of our past Olympiads and see the impact we've made in the scientific community.
           </p>
         </div>

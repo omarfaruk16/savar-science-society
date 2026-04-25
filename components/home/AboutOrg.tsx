@@ -52,9 +52,9 @@ export default function AboutOrg() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-col items-center text-center lg:items-start lg:text-left"
+            className="flex flex-col items-start text-left lg:items-start lg:text-left"
           >
-            <div className="badge mb-4 mx-auto lg:mx-0">About Us</div>
+            <div className="badge mb-4">About Us</div>
             <h2 className="section-title mb-6 leading-tight">
               Building a <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#16a34a] to-[#22c55e]">Brighter Savar</span>
             </h2>
@@ -72,7 +72,7 @@ export default function AboutOrg() {
               {points.map((point, index) => (
                 <li key={index} className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-[#22c55e] flex-shrink-0" />
-                  <span className="text-[#f0fdf4] font-medium">{point}</span>
+                  <span className="text-[#f0fdf4] text-sm md:text-base font-medium">{point}</span>
                 </li>
               ))}
             </ul>

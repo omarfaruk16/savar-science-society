@@ -186,21 +186,21 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
       {/* Editor Content */}
       <EditorContent editor={editor} />
       
-      <style jsx global>{`
-        .prose p.is-editor-empty:first-child::before {
+      <style>{`
+        .ProseMirror p.is-editor-empty:first-child::before {
           content: attr(data-placeholder);
           float: left;
           color: #5a7a68;
           pointer-events: none;
           height: 0;
         }
-        .prose img {
+        .ProseMirror img {
           border-radius: 8px;
           border: 1px solid #1a3028;
           margin-top: 1rem;
           margin-bottom: 1rem;
         }
-        .prose a {
+        .ProseMirror a {
           color: #22c55e;
           text-decoration: underline;
         }

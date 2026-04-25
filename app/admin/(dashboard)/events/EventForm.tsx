@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { saveEvent } from "@/app/actions/admin-actions";
-import { ArrowLeft, Save, Eye, Loader2, Calendar, MapPin, DollarSign } from "lucide-react";
+import { ArrowLeft, Save, Eye, Loader2, Calendar, MapPin, DollarSign, Link2 } from "lucide-react";
 import Link from "next/link";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 
@@ -23,6 +23,15 @@ interface EventFormProps {
   };
 }
 
+function generateSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+}
+
 export default function EventForm({ event }: EventFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -30,6 +39,16 @@ export default function EventForm({ event }: EventFormProps) {
   const [success, setSuccess] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(event?.coverImage || null);
   const [content, setContent] = useState(event?.content || "");
+  const [title, setTitle] = useState(event?.title || "");
+  const [slug, setSlug] = useState(event?.slug || "");
+  const [slugEdited, setSlugEdited] = useState(!!event); // if editing, slug is locked
+
+  // Auto-generate slug from title only when creating new (not editing)
+  useEffect(() => {
+    if (!slugEdited && !event) {
+      setSlug(generateSlug(title));
+    }
+  }, [title, slugEdited, event]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,7 +78,9 @@ export default function EventForm({ event }: EventFormProps) {
     setError(null);
     setSuccess(null);
     const formData = new FormData(e.currentTarget);
-    formData.set("content", content); // Set HTML content from editor
+    formData.set("content", content);
+    formData.set("title", title);
+    formData.set("slug", slug);
     if (isEdit) formData.set("id", event.id);
     if (imagePreview) formData.set("coverImage", imagePreview);
 
@@ -94,13 +115,57 @@ export default function EventForm({ event }: EventFormProps) {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-5">
             <div className="card p-6 bg-[#0a1410] space-y-5">
+              {/* Title */}
               <div>
                 <label className="block text-sm font-semibold text-[#a3b8aa] mb-2">Event Title *</label>
-                <input name="title" type="text" required defaultValue={event?.title || ""} placeholder="e.g. Savar Science Fair 2024" className="input w-full" />
+                <input
+                  name="title"
+                  type="text"
+                  required
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="e.g. Savar Science Fair 2024"
+                  className="input w-full"
+                />
               </div>
+
+              {/* Slug — auto-generated, still editable */}
               <div>
-                <label className="block text-sm font-semibold text-[#a3b8aa] mb-2">Slug (URL) *</label>
-                <input name="slug" type="text" required defaultValue={event?.slug || ""} placeholder="savar-science-fair-2024" className="input w-full font-mono text-sm" />
+                <label className="block text-sm font-semibold text-[#a3b8aa] mb-2 flex items-center gap-2">
+                  <Link2 className="w-4 h-4" />
+                  Slug (URL) *
+                  {!isEdit && (
+                    <span className="text-[10px] text-[#22c55e] bg-[#22c55e]/10 px-2 py-0.5 rounded-full ml-1">
+                      Auto-generated
+                    </span>
+                  )}
+                </label>
+                <input
+                  name="slug"
+                  type="text"
+                  required
+                  value={slug}
+                  onChange={(e) => {
+                    setSlugEdited(true);
+                    setSlug(e.target.value);
+                  }}
+                  placeholder="savar-science-fair-2024"
+                  className="input w-full font-mono text-sm"
+                />
+                {!isEdit && title && (
+                  <p className="text-xs text-[#5a7a68] mt-1">
+                    Preview: <span className="text-[#22c55e]">/events/{slug}</span>
+                    {slugEdited && (
+                      <button
+                        type="button"
+                        onClick={() => { setSlug(generateSlug(title)); setSlugEdited(false); }}
+                        className="ml-3 text-[#a3b8aa] hover:text-[#22c55e] underline"
+                      >
+                        Reset to auto
+                      </button>
+                    )}
+                  </p>
+                )}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
