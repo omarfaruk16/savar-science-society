@@ -5,10 +5,10 @@ import { Users, GraduationCap, Award, School } from "lucide-react";
 
 export default function StatsSection() {
   const stats = [
-    { id: 1, number: "500+", title: "Registered Students", icon: Users },
-    { id: 2, number: "25+", title: "Events Organized", icon: Award },
-    { id: 3, number: "10+", title: "Partner Schools", icon: School },
-    { id: 4, number: "50+", title: "Mentors & Volunteers", icon: GraduationCap },
+    { id: 1, number: "7500+", title: "Registered Students", icon: Users },
+    { id: 2, number: "800+", title: "Awards", icon: Award },
+    { id: 3, number: "130+", title: "Participated Schools", icon: School },
+    { id: 4, number: "50+", title: "Volunteers", icon: GraduationCap },
   ];
 
   return (

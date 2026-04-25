@@ -29,7 +29,7 @@ export default function LatestEvents({ events }: LatestEventsProps) {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8">
           {events.map((event, index) => (
             <motion.div
               key={event.slug}
@@ -37,47 +37,48 @@ export default function LatestEvents({ events }: LatestEventsProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="card group flex flex-col h-full"
+              className="card group h-full"
             >
-              <div className="relative h-48 overflow-hidden">
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
-                <img 
-                  src={event.coverImage || "/placeholder.jpg"} 
-                  alt={event.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              
-              <div className="p-6 flex flex-col flex-grow">
-                <div className="flex items-center gap-4 text-xs font-semibold text-[#22c55e] mb-3">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    {new Date(event.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </div>
+              <Link href={`/events/${event.slug}`} className="flex flex-col md:flex-row h-full">
+                <div className="relative h-48 md:h-auto md:min-h-[250px] md:w-2/5 overflow-hidden shrink-0">
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+                  <img 
+                    src={event.coverImage || "/placeholder.jpg"} 
+                    alt={event.title} 
+                    className="w-full h-full object-cover md:absolute md:inset-0 group-hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
                 
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#22c55e] transition-colors leading-tight">
-                  {event.title}
-                </h3>
-                
-                <p className="text-[#a3b8aa] text-sm mb-6 flex-grow line-clamp-2">
-                  {event.description}
-                </p>
-                
-                <div className="mt-auto pt-4 border-t border-[#1a3028] flex items-center justify-between">
-                  <div className="flex items-center gap-1 text-xs text-[#a3b8aa]">
-                    <MapPin className="w-3 h-3" />
-                    <span className="truncate max-w-[150px]">{event.venue || 'TBA'}</span>
+                <div className="p-6 md:p-8 flex flex-col flex-grow md:w-3/5">
+                  <div className="flex items-center gap-4 text-xs font-semibold text-[#22c55e] mb-3">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      {new Date(event.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </div>
                   </div>
-                  <Link 
-                    href={`/events/${event.slug}`} 
-                    className="text-sm font-bold text-[#22c55e] hover:text-white flex items-center gap-1 transition-colors group/btn"
-                  >
-                    Details
-                    <ArrowRight className="w-4 h-4 group-hover/btn:-rotate-45 transition-transform" />
-                  </Link>
+                  
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-3 group-hover:text-[#22c55e] transition-colors leading-tight">
+                    {event.title}
+                  </h3>
+                  
+                  <p className="text-[#a3b8aa] text-sm md:text-base mb-6 flex-grow line-clamp-2 md:line-clamp-4">
+                    {event.description}
+                  </p>
+                  
+                  <div className="mt-auto pt-4 border-t border-[#1a3028] flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-xs md:text-sm text-[#a3b8aa]">
+                      <MapPin className="w-3 h-3" />
+                      <span className="truncate max-w-[150px] md:max-w-[300px]">{event.venue || 'TBA'}</span>
+                    </div>
+                    <div 
+                      className="text-sm font-bold text-[#22c55e] group-hover:text-white flex items-center gap-1 transition-colors"
+                    >
+                      Details
+                      <ArrowRight className="w-4 h-4 group-hover:-rotate-45 transition-transform" />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </motion.div>
           ))}
         </div>

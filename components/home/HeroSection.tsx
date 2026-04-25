@@ -25,9 +25,9 @@ export default function HeroSection() {
             <span className="text-sm font-medium text-[#a3b8aa]">Empowering Savar's Future</span>
           </div>
 
-          <h1 className="text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-[#f0fdf4] to-[#22c55e] leading-tight">
-            Igniting the spark of <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#16a34a] to-[#22c55e]">Discovery</span>.
+          <h1 className="text-5xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-[#f0fdf4] to-[#22c55e] leading-tight">
+            Where Students Find Inspiration & <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#16a34a] to-[#22c55e]">Dream To Bloom</span>.
           </h1>
 
           <p className="text-lg text-[#a3b8aa] max-w-xl leading-relaxed font-bn">

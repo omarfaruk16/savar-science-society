@@ -7,9 +7,32 @@ const committeeMembers = [
   {
     name: "Md. Touhid Hossain",
     role: "Chief Advisor",
-    university: "Principle of Savar Model College",
+    university: "Principle, Savar Model College",
     image: "/Md. Touhid Hossain.jpeg",
     level: "advisor",
+  },
+  {
+    name: "Prof. Dr. Ilias Molla",
+    role: "Advisor",
+    university: "Chairman, Savar Model College",
+    title: "Former Chairman, Dept. of Chemistry, Jahangirnagar University",
+    image: "/ilias.png",
+    level: "advisor",
+  },
+  {
+    name: "Md Kamal Uddin",
+    role: "Advisor",
+    university: "Secretary, IMED, Planning Ministry",
+    title: "Secretary of Implementation Monitoring and Evaluation Division (IMED), Planning Ministry",
+    image: "/kamal_uddin.png",
+    level: "advisor",
+  },
+  {
+    name: "Abu Baakr Siddique",
+    role: "Founder & Chairman",
+    university: "Savar Science Society",
+    image: "/Abu Bakkr Siddique.jpeg",
+    level: "executive",
   },
   {
     name: "MD Mujahidul Islam",
@@ -33,10 +56,10 @@ const committeeMembers = [
     level: "director",
   },
   {
-    name: "TBA",
+    name: "Md. Sumon Mia",
     role: "Joint Secretary",
-    university: "Savar Science Society",
-    image: null,
+    university: "Bangladesh University of Professionals (BUP)",
+    image: "/sumon.png",
     level: "director",
   },
   {
@@ -71,7 +94,7 @@ const committeeMembers = [
     name: "Israfil Hossain Manik",
     role: "Director Of IT & Communication",
     university: "University of Chittagong",
-    image: "/Israfil Hossain Manik.jpeg",
+    image: "/manik.png",
     level: "director",
   },
   {
@@ -135,7 +158,7 @@ export default function CommitteePage() {
         {/* Advisory Row */}
         {advisors.length > 0 && (
           <>
-            <div className="flex flex-wrap justify-center gap-8 mb-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-20 justify-items-center">
               {advisors.map((member, idx) => (
                 <MemberCard key={member.name} member={member} isLarge={true} index={idx} isAdvisor={true} />
               ))}
@@ -151,7 +174,7 @@ export default function CommitteePage() {
         )}
 
         {/* Executive Row */}
-        <div className="flex flex-wrap justify-center gap-8 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-20 justify-items-center">
           {executives.map((member, idx) => (
             <MemberCard key={member.name} member={member} isLarge={true} index={idx} />
           ))}
@@ -165,7 +188,7 @@ export default function CommitteePage() {
         </div>
 
         {/* Directors Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 justify-items-center">
           {directors.map((member, idx) => (
             <MemberCard key={member.name} member={member} index={idx + 2} />
           ))}
@@ -183,7 +206,7 @@ function MemberCard({ member, isLarge = false, index = 0, isAdvisor = false }: {
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
       whileHover={{ y: -10 }}
-      className={`group relative ${isLarge ? "w-full md:w-[500px]" : "w-full"}`}
+      className={`group relative ${isLarge ? "w-full max-w-[400px]" : "w-full"}`}
     >
       <div className={`
         relative overflow-hidden rounded-[2.5rem] bg-[#0f1d17] border border-[#1a3028] 
