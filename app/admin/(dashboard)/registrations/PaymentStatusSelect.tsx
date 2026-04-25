@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Loader2 } from "lucide-react";
-import { updatePaymentStatus } from "@/app/admin/actions";
+import { updatePaymentStatus } from "@/app/actions/admin-actions";
 
 interface PaymentStatusSelectProps {
   registrationId: string;
