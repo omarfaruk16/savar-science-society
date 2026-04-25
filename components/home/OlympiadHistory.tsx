@@ -51,7 +51,7 @@ export default function OlympiadHistory() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 gap-8 w-full">
           {olympiads.map((olympiad, index) => (
             <motion.div
               key={olympiad.id}
