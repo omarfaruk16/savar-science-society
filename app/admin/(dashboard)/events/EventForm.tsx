@@ -66,6 +66,12 @@ export default function EventForm({ event }: EventFormProps) {
       const uploadForm = new FormData();
       uploadForm.append("file", file);
       const res = await fetch("/api/upload", { method: "POST", body: uploadForm });
+      
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("text/html")) {
+        throw new Error("Server returned HTML instead of JSON. Please run 'npm run build' and restart your server to register the new upload endpoint.");
+      }
+      
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
       setImagePreview(data.url);
