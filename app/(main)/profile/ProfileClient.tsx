@@ -282,14 +282,42 @@ export default function ProfileClient({ user, registrations }: ProfileClientProp
             {registrations.length > 0 ? (
               <div className="space-y-4">
                 {registrations.map((reg) => (
-                  <div key={reg.id} className="glass p-4 rounded-xl border-[#1a3028] flex items-center justify-between">
+                  <div key={reg.id} className="glass p-5 rounded-xl border-[#1a3028] flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                      <h4 className="font-bold text-white">{reg.event.title}</h4>
-                      <p className="text-sm text-[#a3b8aa]">
+                      <h4 className="font-bold text-white text-lg">{reg.event.title}</h4>
+                      <p className="text-sm text-[#a3b8aa] mb-3">
                         {isMounted ? new Date(reg.event.date).toLocaleDateString() : "Loading..."}
                       </p>
+                      
+                      {reg.event.fee > 0 ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-[#a3b8aa]">Payment Status:</span>
+                          {reg.paymentStatus === "PENDING" && (
+                            <span className="px-2 py-0.5 rounded text-xs font-bold bg-yellow-500/10 text-yellow-500 border border-yellow-500/20">PENDING</span>
+                          )}
+                          {reg.paymentStatus === "COMPLETED" && (
+                            <span className="px-2 py-0.5 rounded text-xs font-bold bg-green-500/10 text-green-500 border border-green-500/20">COMPLETED</span>
+                          )}
+                          {reg.paymentStatus === "REJECTED" && (
+                            <span className="px-2 py-0.5 rounded text-xs font-bold bg-red-500/10 text-red-500 border border-red-500/20">REJECTED</span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded text-xs font-bold bg-[#1a3028] text-gray-400 border border-[#224035]">FREE EVENT</span>
+                      )}
+                      
+                      {reg.paymentStatus === "REJECTED" && (
+                        <div className="mt-2 text-xs text-red-400 bg-red-500/5 p-2 rounded border border-red-500/10">
+                          Your payment was marked as rejected. Please contact the administration or check your transaction ID.
+                        </div>
+                      )}
                     </div>
-                    <Link href={`/events/${reg.event.slug}`} className="text-[#22c55e] hover:underline text-sm font-medium">View Details</Link>
+                    
+                    <div className="flex flex-col items-end justify-center gap-2">
+                      <Link href={`/events/${reg.event.slug}`} className="btn-secondary text-sm py-1.5 px-4 w-full text-center">
+                        View Event
+                      </Link>
+                    </div>
                   </div>
                 ))}
               </div>

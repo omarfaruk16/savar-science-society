@@ -137,3 +137,16 @@ export async function toggleEventStatus(id: string, field: "published" | "isRegi
   revalidatePath("/admin/events");
   revalidatePath("/events");
 }
+
+// ─────────────────────────────────────────────
+// REGISTRATION ACTIONS
+// ─────────────────────────────────────────────
+
+export async function updatePaymentStatus(id: string, status: string) {
+  await prisma.registration.update({
+    where: { id },
+    data: { paymentStatus: status },
+  });
+  revalidatePath("/admin/registrations");
+  revalidatePath("/profile"); // Revalidate student profile so they see the update
+}
