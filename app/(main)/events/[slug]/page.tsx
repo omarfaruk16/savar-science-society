@@ -4,6 +4,7 @@ import { Calendar, MapPin, Clock, ArrowLeft, Users, Trophy, Image as ImageIcon, 
 import prisma from "@/lib/prisma";
 import { getEventBySlug } from "@/lib/events";
 import { auth } from "@/lib/auth";
+import EventRegistrationButton from "@/components/events/EventRegistrationButton";
 
 export const dynamic = "force-dynamic";
 
@@ -112,15 +113,17 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                 </div>
               </div>
 
-              {event.isRegistrationOpen ? (
-                <Link href={`/register?event=${event.id}`} className="btn-primary w-full justify-center text-lg py-4">
-                  Register Now
-                </Link>
-              ) : (
-                <button disabled className="btn-primary w-full justify-center text-lg py-4 opacity-50 cursor-not-allowed">
-                  Registration Closed
-                </button>
-              )}
+              {/* Register Action Area */}
+              <EventRegistrationButton 
+                event={{
+                  id: event.id,
+                  title: event.title,
+                  slug: event.slug,
+                  fee: event.fee,
+                  isRegistrationOpen: event.isRegistrationOpen
+                }} 
+                isLoggedIn={!!session?.user} 
+              />
               
               <p className="text-center text-xs text-[#5a7a68] mt-4">
                 {event.isRegistrationOpen ? "Join us for this exciting opportunity!" : "Stay tuned for future events."}
