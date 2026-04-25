@@ -6,33 +6,33 @@ import { motion } from "framer-motion";
 const olympiads = [
   {
     id: 1,
-    title: "Math & Science Olympiad 2023",
+    title: "Math & Science Olympiad 1.0",
     slug: "math&science_olympiad_1",
     image: "/images/olympiads/olympiad_1.png",
-    students: "1,200+",
-    schools: "45",
-    date: "October 15, 2023",
-    venue: "Savar Government College",
+    students: "2200+",
+    schools: "7",
+    date: "November 11, 2023",
+    venue: "Central Laboratory School and College",
   },
   {
     id: 2,
-    title: "Math & Science Olympiad 2024",
+    title: "Math & Science Olympiad 2.0",
     slug: "math&science_olympiad_2",
     image: "/images/olympiads/olympiad_2.png",
-    students: "1,800+",
-    schools: "62",
-    date: "November 20, 2024",
-    venue: "Jahangirnagar University",
+    students: "2,200+",
+    schools: "30",
+    date: "October 27, 2024",
+    venue: "Savar Model College",
   },
   {
     id: 3,
-    title: "Math & Science Olympiad 2025",
+    title: "Math & Science Olympiad 3.0",
     slug: "math&science_olympiad_3",
     image: "/images/olympiads/olympiad_3.png",
-    students: "2,500+",
-    schools: "85",
-    date: "Coming Soon",
-    venue: "Savar Science Society Campus",
+    students: "5000+",
+    schools: "70",
+    date: "September 27, 2025",
+    venue: "Savar Model College",
   },
 ];
 
@@ -41,7 +41,7 @@ export default function OlympiadHistory() {
     <section className="bg-[#050d0a] py-20 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#22c55e]/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-      
+
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <div className="badge mb-4">Our Legacy</div>
@@ -61,14 +61,14 @@ export default function OlympiadHistory() {
               transition={{ delay: index * 0.1, duration: 0.6 }}
               className="group"
             >
-              <Link 
+              <Link
                 href={`/${olympiad.slug}`}
                 className="flex flex-col md:flex-row bg-[#0a1410] border border-[#1a3028] rounded-3xl overflow-hidden hover:border-[#22c55e]/30 transition-all duration-500 shadow-xl group-hover:shadow-[#22c55e]/5"
               >
                 {/* Left side: Image */}
                 <div className="md:w-2/5 h-64 md:h-auto relative overflow-hidden">
-                  <img 
-                    src={olympiad.image} 
+                  <img
+                    src={olympiad.image}
                     alt={olympiad.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -91,7 +91,7 @@ export default function OlympiadHistory() {
                         <p className="text-white font-bold">{olympiad.students}</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-[#22c55e]/10 flex items-center justify-center">
                         <School className="w-5 h-5 text-[#22c55e]" />
