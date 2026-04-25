@@ -3,14 +3,21 @@ import { notFound } from "next/navigation";
 import { Calendar, MapPin, Clock, ArrowLeft, Users, Trophy, Image as ImageIcon, MessageSquare } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { getEventBySlug } from "@/lib/events";
+import { auth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function EventDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const event = (await getEventBySlug(slug)) as any;
+  let decodedSlug = slug;
+  try { decodedSlug = decodeURIComponent(slug); } catch (e) {}
+  
+  const event = (await getEventBySlug(decodedSlug)) as any;
+  const session = await auth();
+  const isAdmin = session?.user && (session.user as any).role === "ADMIN";
 
-  if (!event || !event.published) {
+  // 404 if event doesn't exist, OR if it's unpublished and user is not an admin
+  if (!event || (!event.published && !isAdmin)) {
     notFound();
   }
 

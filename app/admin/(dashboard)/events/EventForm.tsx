@@ -293,17 +293,8 @@ export default function EventForm({ event }: EventFormProps) {
                     />
                   </div>
 
-                  {/* Or paste URL */}
-                  <div className="relative">
-                    <input
-                      name="coverImage"
-                      type="text"
-                      value={imagePreview || ""}
-                      onChange={(e) => setImagePreview(e.target.value || null)}
-                      placeholder="Or paste image URL here..."
-                      className="input w-full text-xs font-mono"
-                    />
-                  </div>
+                  {/* Hidden input for the uploaded image URL */}
+                  <input type="hidden" name="coverImage" value={imagePreview || ""} />
 
                   {imagePreview && (
                     <button
