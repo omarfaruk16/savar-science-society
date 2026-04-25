@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, DollarSign, Wallet, CreditCard } from "lucide-react";
+import { Loader2, CreditCard, CheckCircle, Clock, XCircle, Link } from "lucide-react";
 import { registerForEvent } from "@/app/(main)/events/actions";
 
 interface EventRegistrationButtonProps {
@@ -14,9 +14,10 @@ interface EventRegistrationButtonProps {
     isRegistrationOpen: boolean;
   };
   isLoggedIn: boolean;
+  existingRegistration?: { paymentStatus: string } | null;
 }
 
-export default function EventRegistrationButton({ event, isLoggedIn }: EventRegistrationButtonProps) {
+export default function EventRegistrationButton({ event, isLoggedIn, existingRegistration }: EventRegistrationButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [showPaymentForm, setShowPaymentForm] = useState(false);
@@ -58,6 +59,42 @@ export default function EventRegistrationButton({ event, isLoggedIn }: EventRegi
       <button disabled className="btn-primary w-full justify-center text-lg py-4 opacity-50 cursor-not-allowed">
         Registration Closed
       </button>
+    );
+  }
+
+  // Show status if already registered
+  if (existingRegistration) {
+    const { paymentStatus } = existingRegistration;
+    return (
+      <div className="space-y-3">
+        <div className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-bold text-base border-2 border-[#22c55e]/40 bg-[#22c55e]/10 text-[#22c55e]">
+          <CheckCircle className="w-5 h-5" />
+          You are already registered!
+        </div>
+        {event.fee > 0 && (
+          <div className="flex items-center justify-center gap-2 text-xs">
+            <span className="text-[#a3b8aa]">Payment Status:</span>
+            {paymentStatus === "PENDING" && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+                <Clock className="w-3 h-3" /> PENDING
+              </span>
+            )}
+            {paymentStatus === "COMPLETED" && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold bg-green-500/10 text-green-400 border border-green-500/20">
+                <CheckCircle className="w-3 h-3" /> COMPLETED
+              </span>
+            )}
+            {paymentStatus === "REJECTED" && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold bg-red-500/10 text-red-400 border border-red-500/20">
+                <XCircle className="w-3 h-3" /> REJECTED
+              </span>
+            )}
+          </div>
+        )}
+        <a href="/profile" className="block text-center text-xs text-[#22c55e] hover:underline mt-1">
+          View in My Profile →
+        </a>
+      </div>
     );
   }
 

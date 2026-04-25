@@ -22,6 +22,15 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
     notFound();
   }
 
+  // Check if the logged-in user has already registered for this event
+  let existingRegistration: { paymentStatus: string } | null = null;
+  if (session?.user?.id) {
+    existingRegistration = await prisma.registration.findFirst({
+      where: { userId: session.user.id, eventId: event.id },
+      select: { paymentStatus: true },
+    });
+  }
+
   return (
     <div className="pt-24 pb-16 bg-[#050d0a] min-h-screen">
       <div className="container mx-auto px-4">
@@ -122,7 +131,8 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
                   fee: event.fee,
                   isRegistrationOpen: event.isRegistrationOpen
                 }} 
-                isLoggedIn={!!session?.user} 
+                isLoggedIn={!!session?.user}
+                existingRegistration={existingRegistration}
               />
               
               <p className="text-center text-xs text-[#5a7a68] mt-4">
