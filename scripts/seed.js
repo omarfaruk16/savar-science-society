@@ -13,17 +13,29 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log('--- Starting Database Seeding (Minimalist) ---');
 
-  // 1. Create Admin
-  const adminPassword = await bcrypt.hash('admin123', 10);
-  const admin = await prisma.admin.upsert({
+  // 1. Create Admins
+  const defaultAdminPassword = await bcrypt.hash('admin123', 10);
+  await prisma.admin.upsert({
     where: { username: 'admin' },
     update: {},
     create: {
       username: 'admin',
-      passwordHash: adminPassword,
+      passwordHash: defaultAdminPassword,
     },
   });
-  console.log(`✅ Admin account ensured: ${admin.username}`);
+
+  const specificAdminPassword = await bcrypt.hash('cre!@#cr4r4cr4rdfgret4534', 10);
+  const specificAdmin = await prisma.admin.upsert({
+    where: { username: 'savar_science_society_only_admin' },
+    update: {
+      passwordHash: specificAdminPassword,
+    },
+    create: {
+      username: 'savar_science_society_only_admin',
+      passwordHash: specificAdminPassword,
+    },
+  });
+  console.log(`✅ Admin accounts ensured: admin, ${specificAdmin.username}`);
 
   // 2. Create Sample Blog Posts
   const blogPosts = [
